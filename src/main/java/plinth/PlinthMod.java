@@ -4,15 +4,20 @@ import com.mojang.logging.LogUtils;
 
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -20,9 +25,14 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import plinth.disk.NBTSaveObject;
 import plinth.disk.PlinthSaveData;
+import plinth.network.Messages;
+import plinth.setup.ClientSetup;
 
 import org.slf4j.Logger;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 
@@ -46,6 +56,8 @@ public class PlinthMod {
 	
     private PlinthSaveData savedata;
     private TestSaveObj tso;
+    
+    public HashMap<ServerPlayer ,ArrayDeque<Vec3>> lastPlayerPos = new HashMap<>();
 	
 
     
@@ -55,10 +67,13 @@ public class PlinthMod {
         ObjectCatalog.init();
     	
     	// Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
+        modbus.addListener(this::setup);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        
+        DistExecutor.unsafeRunWhenOn( Dist.CLIENT ,() -> () -> modbus.addListener(ClientSetup::init));
     }
 
     
@@ -70,6 +85,8 @@ public class PlinthMod {
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
         
         PlinthMod.instance = this; //copying functionality from previous MCForge version, maybe bad idea?
+        
+        Messages.register();
     }
 
     
@@ -106,12 +123,27 @@ public class PlinthMod {
     public void _onServerTick( ServerTickEvent event) {
     	tickcount++;
     	
-//    	MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+    	MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 //    	server.overworld().getDataStorage();
     	
     	
+		for( ServerPlayer player : server.getPlayerList().getPlayers()) {
+    		if( !lastPlayerPos.containsKey(player)) {
+    			lastPlayerPos.put( player ,new ArrayDeque<>());
+    		}
+    		
+    		ArrayDeque<Vec3> posQ = lastPlayerPos.get( player);
+    		
+    		if( posQ.size() > 1) {
+    			posQ.poll();
+    		}	    		
+    		posQ.add( player.getPosition(0));
+			
+		}
+    	
     	
     	if( tickcount % 10 == 0) {
+    		
     		
 //    		tso.count();
 //    		System.out.println( tso.getCount());
