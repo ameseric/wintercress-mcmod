@@ -22,11 +22,18 @@ public class ObjectCatalog {
 	public static final BlockBehaviour.Properties ORE_PROPERTIES = BlockBehaviour.Properties.of( Material.STONE);
 	public static final Item.Properties ITEM_PROPERTIES = new Item.Properties().tab( PlinthMod.CREATIVE_TAB);
 	
+	
 	public static final RegistryObject<Block> TEST_ORE = BLOCKS.register( "test_ore" ,() -> new Block(ORE_PROPERTIES));
+	
+	
 	public static final RegistryObject<Item> TEST_ORE_ITEM = fromBlock( TEST_ORE);
+	public static final RegistryObject<Item> TEST_CHUNK = ITEMS.register( "test_chunk" ,() -> new Item(ITEM_PROPERTIES));
+	public static final RegistryObject<Item> TEST_INGOT = ITEMS.register( "test_ingot" ,() -> new Item(ITEM_PROPERTIES));
 	
 	
-	//private ObjectCatalog() {}
+	//public static final Tags.IOptionalNamedTag<Block> 
+	
+	
 	
 	
 	public static void init() {
@@ -35,6 +42,8 @@ public class ObjectCatalog {
 		BLOCKS.register(bus);
 		ITEMS.register(bus);
 	}
+	
+	
 	
 	
 	public static <B extends Block> RegistryObject<Item> fromBlock( RegistryObject<B> block){

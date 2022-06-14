@@ -18,12 +18,17 @@ public class DataGenerators {
 		DataGenerator generator = event.getGenerator();
 		
 		if( event.includeServer()) {
-//			generator.addProvider( );
+			generator.addProvider( new Recipes(generator));
+			generator.addProvider( new LootTablesPlinth(generator));
+			
+			BlockTagsPlinth blockTags = new BlockTagsPlinth( generator ,event.getExistingFileHelper());
+			generator.addProvider( blockTags);
+			generator.addProvider( new ItemTags(generator ,blockTags ,event.getExistingFileHelper()));
 		}
 		
 		if( event.includeClient()) {
-			generator.addProvider( new DGBlockStates( generator ,event.getExistingFileHelper()));
-			generator.addProvider( new DGItemModels( generator ,event.getExistingFileHelper()));
+			generator.addProvider( new BlockStates( generator ,event.getExistingFileHelper()));
+			generator.addProvider( new ItemModels( generator ,event.getExistingFileHelper()));
 			generator.addProvider( new PlinthLanguageProvider( generator ,"en_us"));
 		}
 	}

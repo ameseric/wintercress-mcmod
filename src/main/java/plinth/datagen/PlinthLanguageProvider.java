@@ -17,6 +17,9 @@ public class PlinthLanguageProvider extends LanguageProvider{
 		add( "itemGroup.plinthtab" ,"Plinth");
 		add( ObjectCatalog.TEST_ORE.get() ,"Test Ore");
 		
+		add( ObjectCatalog.TEST_CHUNK.get() ,"Test Ore Chunk");
+		add( ObjectCatalog.TEST_INGOT.get() ,"Test Ore Ingot");
+		
 		add(  KeyBindings.KEY_CATEGORIES_PLINTH ,"Plinth Keys");
 		add(  KeyBindings.KEY_DASH ,"Player Dash");
 	}

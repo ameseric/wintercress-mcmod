@@ -23,6 +23,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import plinth.combat.EntityDamageHandler;
 import plinth.disk.NBTSaveObject;
 import plinth.disk.PlinthSaveData;
 import plinth.network.Messages;
@@ -31,7 +32,6 @@ import plinth.setup.ClientSetup;
 import org.slf4j.Logger;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -62,24 +62,25 @@ public class PlinthMod {
 
     
     
-    public PlinthMod()
-    {
+    public PlinthMod(){
         ObjectCatalog.init();
     	
     	// Register the setup method for modloading
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
         modbus.addListener(this::setup);
+//        modbus.addListener(EntityDamageHandler::_OnLivingEntityDamage); //errors out
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register( EntityDamageHandler.class);
         
         DistExecutor.unsafeRunWhenOn( Dist.CLIENT ,() -> () -> modbus.addListener(ClientSetup::init));
     }
 
     
     
-    private void setup(final FMLCommonSetupEvent event)
-    {
+    //server setup, for now
+    private void setup(final FMLCommonSetupEvent event){
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
@@ -113,7 +114,31 @@ public class PlinthMod {
         NBTSaveObject[] objectsOnDisk = { tso};
         savedata = PlinthSaveData.getInstance( server ,objectsOnDisk);
         savedata.printData();
-    }    
+    }
+    
+    
+    
+    
+//    @SubscribeEvent
+//    public void _OnLivingEntityDamage( LivingDamageEvent event) {
+//    	System.out.println( event.getAmount());
+//    	
+//    	Entity source = event.getSource().getEntity();
+//    	if( source instanceof Spider) {
+//    		event.setAmount(0);
+////    		System.out.println("Negating damage from: " + source.getId()); //entity, not species
+////    		System.out.println("Negating damage from: " + source.getCustomName()); //null
+////    		System.out.println("Negating damage from: " + source.getDisplayName()); //component...
+////    		System.out.println( source.getClass());
+//    		System.out.println("Negating damage from spider.");
+//    	}else if( source instanceof Zombie) {
+//    		System.out.println( "Negating damage from Zombie.");
+//    	}else if( source instanceof Creeper) {
+//    		System.out.println( "Negating damage from Creeper.");
+//    	}
+//
+//    	System.out.println( event.getAmount());
+//    }
 
     
 

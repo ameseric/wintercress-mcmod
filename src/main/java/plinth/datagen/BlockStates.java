@@ -6,9 +6,9 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import plinth.ObjectCatalog;
 import plinth.PlinthMod;
 
-public class DGBlockStates extends BlockStateProvider{
+public class BlockStates extends BlockStateProvider{
 
-	public DGBlockStates( DataGenerator gen ,ExistingFileHelper helper) {
+	public BlockStates( DataGenerator gen ,ExistingFileHelper helper) {
 		super( gen ,PlinthMod.MODID ,helper);
 	}
 
