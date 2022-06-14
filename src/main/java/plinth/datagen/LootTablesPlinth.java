@@ -16,7 +16,21 @@ public class LootTablesPlinth extends BaseLootTableProvider{
 	
 	@Override
 	protected void addTables() {
-		lootTables.put( ObjectCatalog.TEST_ORE.get() ,createSilkTouchTable( "test_ore" ,ObjectCatalog.TEST_ORE.get() ,ObjectCatalog.TEST_CHUNK.get() ,1 ,3 ));
+		lootTables.put( 
+				ObjectCatalog.TEST_ORE.get() 
+				,createSilkTouchTable( 
+						"test_ore" 
+						,ObjectCatalog.TEST_ORE.get() 
+						,ObjectCatalog.TEST_CHUNK.get() 
+						,1 
+						,3 ));
+		
+		lootTables.put( 
+				ObjectCatalog.POWERGEN.get() 
+				,createStandardTable( 
+						"powergen" 
+						,ObjectCatalog.POWERGEN.get() 
+						,ObjectCatalog.POWERGEN_BE.get()));
 	}
 	
 	
