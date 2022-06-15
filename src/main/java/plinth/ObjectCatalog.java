@@ -16,6 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 import plinth.blocks.PowergenBE;
 import plinth.blocks.PowergenBlock;
 import plinth.blocks.PowergenContainer;
+import plinth.items.ScionItem;
 
 
 public class ObjectCatalog {
@@ -39,6 +40,7 @@ public class ObjectCatalog {
 	public static final RegistryObject<Item> POWERGEN_ITEM = fromBlock( POWERGEN);
 	public static final RegistryObject<Item> TEST_CHUNK = ITEMS.register( "test_chunk" ,() -> new Item(ITEM_PROPERTIES));
 	public static final RegistryObject<Item> TEST_INGOT = ITEMS.register( "test_ingot" ,() -> new Item(ITEM_PROPERTIES));
+	public static final RegistryObject<Item> SCION = ITEMS.register( "scion" , () -> new ScionItem( ITEM_PROPERTIES.durability(500)));
 	
 	
 	//BlockEntities

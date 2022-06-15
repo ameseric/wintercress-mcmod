@@ -64,7 +64,7 @@ public class PacketPlayerDash {
 			
 			
 	    	if( traj.x == 0 && traj.z == 0) {
-	    		Vec3 facing = player.getForward(); //this is going to break on a hosted server, need to fix
+	    		Vec3 facing = player.getForward(); //getForward will break on a hosted server?
 	    		move = move.add( facing.x ,0 ,facing.z);
 	    	}else {
 	    		move = move.add( traj.x ,0 ,traj.z);

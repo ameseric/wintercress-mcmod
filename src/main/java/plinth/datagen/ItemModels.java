@@ -16,6 +16,7 @@ public class ItemModels extends ItemModelProvider{
 	protected void registerModels() {
 		withExistingParent( ObjectCatalog.TEST_ORE.get().getRegistryName().getPath() ,modLoc("block/test_ore"));		
 		withExistingParent( ObjectCatalog.POWERGEN_ITEM.get().getRegistryName().getPath() ,modLoc( "block/powergen/main"));
+		withExistingParent( ObjectCatalog.SCION.get().getRegistryName().getPath() ,modLoc( "block/powergen/main"));
 		
 		singleTexture( ObjectCatalog.TEST_INGOT.get().getRegistryName().getPath()
 				,mcLoc( "item/generated")
