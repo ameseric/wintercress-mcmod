@@ -1,13 +1,10 @@
 package plinth.combat;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.Spider;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import plinth.PlinthMod;
+
 
 
 //@Mod.EventBusSubscriber(modid = PlinthMod.MODID ,bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -16,25 +13,28 @@ public class EntityDamageHandler {
 	@SubscribeEvent
 	public static void _OnLivingEntityDamage( LivingDamageEvent event) {
 
-		if( event.getEntity().getLevel().isClientSide()){
+		Entity source = event.getSource().getEntity();
+		Entity target = event.getEntity();
+		
+		if( target.getLevel().isClientSide()){
 			return;
 		}
 		
-    	System.out.println( event.getAmount());
-    	
-    	Entity source = event.getSource().getEntity();
-    	if( source instanceof Spider) {
-    		event.setAmount(0);
-    		System.out.println("Negating damage from spider.");
-    	}else if( source instanceof Zombie) {
-    		event.setAmount(0);
-    		System.out.println( "Negating damage from Zombie.");
-    	}else if( source instanceof Creeper) {
-    		event.setAmount(0);
-    		System.out.println( "Negating damage from Creeper.");
-    	}
-
-    	System.out.println( event.getAmount());
-    }
+    	if( source != null) {
+	    	System.out.println( source.getClass().getCanonicalName() + " is attacking " + target.getClass().getCanonicalName());
+			System.out.println( "Damage before adjustment: " + event.getAmount());
+			
+	    	
+	    	if( target instanceof Player) {
+	    		//get source damage type (if possible)
+	    		//check player resistances
+	    		
+	    	}else if( source instanceof Player) {
+	    		//get player weapon damage type
+	    		event.setAmount( VanillaMobDamageResistances.getMobDamageTaken( target ,DamageType.FIRE ,event.getAmount()));
+	    	}
 	
+	    	System.out.println( "Damage after adjustment: " + event.getAmount());
+    	}
+    }	
 }

@@ -57,6 +57,8 @@ public class PlinthMod {
     private PlinthSaveData savedata;
     private TestSaveObj tso;
     
+    public HashMap<ItemStack ,Boolean> scionMap = new HashMap<>();
+    
     public HashMap<ServerPlayer ,ArrayDeque<Vec3>> lastPlayerPos = new HashMap<>();
 	
 
