@@ -41,6 +41,19 @@ public class DamageResistanceValues {
 	}
 	
 	
+	public void addResistances( int[] values) {
+		if( values.length < DamageType.values().length) {
+			System.out.println( "ERROR! Entity resistance values don't match up with known DamageTypes!");
+			return;
+		}
+		for( DamageType dt : DamageType.values()) {
+			int oldResistance = resistances.get( dt);
+			int addResistance = values[dt.ordinal()];
+			resistances.put( dt ,oldResistance + addResistance); 
+		}
+	}
+	
+	
 	
 	public void setResistance( DamageType dt ,int resistValue) {
 		this.resistances.put( dt ,resistValue);

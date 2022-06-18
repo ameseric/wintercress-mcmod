@@ -18,6 +18,7 @@ import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -28,6 +29,7 @@ import plinth.disk.NBTSaveObject;
 import plinth.disk.PlinthSaveData;
 import plinth.network.Messages;
 import plinth.setup.ClientSetup;
+import plinth.survival.SurvivalServerTickHandler;
 
 import org.slf4j.Logger;
 
@@ -75,6 +77,7 @@ public class PlinthMod {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register( EntityDamageHandler.class);
+        MinecraftForge.EVENT_BUS.register( SurvivalServerTickHandler.class);
         
         DistExecutor.unsafeRunWhenOn( Dist.CLIENT ,() -> () -> modbus.addListener(ClientSetup::init));
     }
@@ -149,6 +152,10 @@ public class PlinthMod {
     @SubscribeEvent
     public void _onServerTick( ServerTickEvent event) {
     	tickcount++;
+
+    	if( event.side == LogicalSide.CLIENT) {
+    		return;
+    	}
     	
     	MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 //    	server.overworld().getDataStorage();
