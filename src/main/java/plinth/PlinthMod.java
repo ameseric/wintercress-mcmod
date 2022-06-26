@@ -15,6 +15,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -27,8 +28,10 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import plinth.combat.EntityDamageHandler;
 import plinth.disk.NBTSaveObject;
 import plinth.disk.PlinthSaveData;
+import plinth.entities.ThiefEntity;
 import plinth.network.Messages;
 import plinth.setup.ClientSetup;
+import plinth.setup.ModSetup;
 import plinth.survival.SurvivalServerTickHandler;
 
 import org.slf4j.Logger;
@@ -68,16 +71,26 @@ public class PlinthMod {
     
     public PlinthMod(){
         ObjectCatalog.init();
+        
+        
+        //MinecraftForge.EVENT_BUS.register
+        // this is for FORGE events
+        //FMLJavaModLoadingContext.get().getModEventBus().register
+        // this is for MOD events
+        
     	
     	// Register the setup method for modloading
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus forgebus = MinecraftForge.EVENT_BUS;
         modbus.addListener(this::setup);
+        //modbus.addListener(this::onAttributeCreate);
 //        modbus.addListener(EntityDamageHandler::_OnLivingEntityDamage); //errors out
 
         // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register( EntityDamageHandler.class);
-        MinecraftForge.EVENT_BUS.register( SurvivalServerTickHandler.class);
+        forgebus.register(this);
+        forgebus.register( EntityDamageHandler.class);
+        forgebus.register( SurvivalServerTickHandler.class);
+        modbus.register( ModSetup.class);
         
         DistExecutor.unsafeRunWhenOn( Dist.CLIENT ,() -> () -> modbus.addListener(ClientSetup::init));
     }
@@ -94,6 +107,14 @@ public class PlinthMod {
         
         Messages.register();
     }
+    
+    
+    
+//    @SubscribeEvent
+//    public static void onAttributeCreate( EntityAttributeCreationEvent event) {
+//    	System.out.println( "CREATE? ===========================================================================");
+//    	event.put( ObjectCatalog.THIEF.get() ,ThiefEntity.createAttributes().build());
+//    }
 
     
     

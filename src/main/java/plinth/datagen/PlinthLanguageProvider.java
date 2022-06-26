@@ -29,6 +29,9 @@ public class PlinthLanguageProvider extends LanguageProvider{
 		add(  KeyBindings.KEY_DASH ,"Player Dash");
 		
 		add( ObjectCatalog.SCION.get() ,"Test Weapon");
+		
+		add( ObjectCatalog.THIEF_EGG.get() ,"Thief Egg");
+		add( ObjectCatalog.THIEF.get() ,"Thief");
 	}
 	
 	

@@ -106,8 +106,7 @@ public class ScionItem extends Item{
 	
 	
 	
-	//issue with item reequipping when tags are updated, MUST be fixed
-	//if no fix, could instead of storing cooldown, store gametime() on use, then calculate diff every tick
+	//do not change NBT tag during inventory tick, except very infrequently. Can't find fix for reequip "bug".
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int pSlotId, boolean pIsSelected) {
 	

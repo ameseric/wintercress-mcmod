@@ -18,6 +18,8 @@ public class ItemModels extends ItemModelProvider{
 		withExistingParent( ObjectCatalog.POWERGEN_ITEM.get().getRegistryName().getPath() ,modLoc( "block/powergen/main"));
 		withExistingParent( ObjectCatalog.SCION.get().getRegistryName().getPath() ,modLoc( "block/powergen/main"));
 		
+		withExistingParent( ObjectCatalog.THIEF_EGG.get().getRegistryName().getPath() ,mcLoc("item/template_spawn_egg"));
+		
 		singleTexture( ObjectCatalog.TEST_INGOT.get().getRegistryName().getPath()
 				,mcLoc( "item/generated")
 				,"layer0" ,modLoc( "item/test_ingot"));
